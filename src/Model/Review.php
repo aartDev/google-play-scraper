@@ -60,7 +60,7 @@ class Review implements \JsonSerializable
      * @param string                  $id         review id
      * @param string                  $userName   review author
      * @param string                  $text       review text
-     * @param GoogleImage             $avatar     author's avatar
+     * @param null|GoogleImage        $avatar     author's avatar
      * @param \DateTimeInterface|null $date       review date
      * @param int                     $score      review score
      * @param int                     $likeCount  the number of likes reviews
@@ -72,7 +72,7 @@ class Review implements \JsonSerializable
 //        string $url,
         string $userName,
         string $text,
-        GoogleImage $avatar,
+        ?GoogleImage $avatar,
         ?\DateTimeInterface $date,
         int $score,
         int $likeCount = 0,
@@ -131,9 +131,9 @@ class Review implements \JsonSerializable
     /**
      * Returns the user's avatar.
      *
-     * @return GoogleImage author's avatar
+     * @return null|GoogleImage author's avatar
      */
-    public function getAvatar(): GoogleImage
+    public function getAvatar()
     {
         return $this->avatar;
     }
@@ -199,7 +199,9 @@ class Review implements \JsonSerializable
             'id' => $this->id,
             'userName' => $this->userName,
             'text' => $this->text,
-            'avatar' => $this->avatar->getUrl(),
+            'avatar' => ($this->avatar instanceof GoogleImage)
+                ? $this->avatar->getUrl()
+                : '',
             'appVersion' => $this->appVersion,
             'date' => $this->date->format(\DateTime::RFC3339),
             'timestamp' => $this->date->getTimestamp(),
