@@ -52,7 +52,9 @@ class ReviewsExtractor
         $reviewId = $reviewData[0];
 //        $reviewUrl = $requestApp->getUrl() . '&reviewId=' . urlencode($reviewId);
         $userName = $reviewData[1][0];
-        $avatar = (new GoogleImage($reviewData[1][1][3][2]))->setSize(64);
+        $avatar = !empty($reviewData[1][1][3][2])
+            ? (new GoogleImage($reviewData[1][1][3][2]))->setSize(64)
+            : null;
         $date = DateStringFormatter::unixTimeToDateTime($reviewData[5][0]);
         $score = $reviewData[2] ?? 0;
         $text = (string) ($reviewData[4] ?? '');
