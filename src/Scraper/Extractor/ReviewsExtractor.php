@@ -50,22 +50,22 @@ class ReviewsExtractor
     public static function extractReview(AppId $requestApp, $reviewData): Review
     {
         $reviewId = $reviewData[0];
-//        $reviewUrl = $requestApp->getUrl() . '&reviewId=' . urlencode($reviewId);
-        $userName = $reviewData[1][0];
+        $userName = is_string($reviewData[1][0]) ? $reviewData[1][0] : '';
         $avatar = !empty($reviewData[1][1][3][2])
             ? (new GoogleImage($reviewData[1][1][3][2]))->setSize(64)
             : null;
-        $date = DateStringFormatter::unixTimeToDateTime($reviewData[5][0]);
+        $date = !empty($reviewData[5][0])
+            ? DateStringFormatter::unixTimeToDateTime($reviewData[5][0])
+            : null;
         $score = $reviewData[2] ?? 0;
         $text = (string) ($reviewData[4] ?? '');
-        $likeCount = $reviewData[6];
+        $likeCount = $reviewData[6] ?? 0;
         $appVersion = $reviewData[10] ?? null;
 
         $reply = self::extractReplyReview($reviewData);
 
         return new Review(
             $reviewId,
-//            $reviewUrl,
             $userName,
             $text,
             $avatar,

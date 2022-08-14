@@ -203,8 +203,8 @@ class Review implements \JsonSerializable
                 ? $this->avatar->getUrl()
                 : '',
             'appVersion' => $this->appVersion,
-            'date' => $this->date->format(\DateTime::RFC3339),
-            'timestamp' => $this->date->getTimestamp(),
+            'date' => $this->date instanceof \DateTimeInterface ? $this->date->format(\DateTime::RFC3339) : '',
+            'timestamp' => $this->date instanceof \DateTimeInterface ? $this->date->getTimestamp() : '',
             'score' => $this->score,
             'countLikes' => $this->countLikes,
             'reply' => $this->reply ? $this->reply->asArray() : null,
